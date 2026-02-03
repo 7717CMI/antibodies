@@ -517,7 +517,6 @@ export default function DashboardPage() {
                     {activeTab === 'customer-intelligence-database' && (
                       <div id="customer-intelligence-database-chart">
                         <CustomerIntelligenceDatabaseWithTabs
-                          title="Customer Intelligence Database"
                           height={600}
                         />
                       </div>
@@ -616,7 +615,6 @@ export default function DashboardPage() {
                       <div className="border-b pb-8">
                         <h3 className="text-lg font-semibold text-black mb-4">👤 Customer Intelligence Database</h3>
                         <CustomerIntelligenceDatabaseWithTabs
-                          title="Customer Intelligence Database"
                           height={600}
                         />
                       </div>
