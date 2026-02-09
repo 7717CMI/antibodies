@@ -13,7 +13,7 @@ import { WaterfallChart } from '@/components/charts/WaterfallChart'
 import { D3BubbleChartIndependent } from '@/components/charts/D3BubbleChartIndependent'
 import { CompetitiveIntelligence } from '@/components/charts/CompetitiveIntelligence'
 import CustomerIntelligenceHeatmap from '@/components/charts/CustomerIntelligenceHeatmap'
-import DistributorsIntelligence from '@/components/charts/DistributorsIntelligenceTable'
+import DistributorIntelligenceTable from '@/components/charts/DistributorIntelligenceTable'
 import CustomerIntelligenceDatabaseWithTabs from '@/components/charts/CustomerIntelligenceDatabaseWithTabs'
 import { InsightsPanel } from '@/components/InsightsPanel'
 import { FilterPresets } from '@/components/filters/FilterPresets'
@@ -31,7 +31,7 @@ export default function DashboardPage() {
   const { setData, setLoading, setError, data, isLoading, error, filters, selectedChartGroup, dashboardName } = useDashboardStore()
   const [mounted, setMounted] = useState(false)
   const [hasCheckedStore, setHasCheckedStore] = useState(false)
-  const [activeTab, setActiveTab] = useState<'bar' | 'line' | 'heatmap' | 'table' | 'waterfall' | 'bubble' | 'competitive-intelligence' | 'customer-intelligence' | 'customer-intelligence-database'>('bar')
+  const [activeTab, setActiveTab] = useState<'bar' | 'line' | 'heatmap' | 'table' | 'waterfall' | 'bubble' | 'competitive-intelligence' | 'customer-intelligence' | 'distributor-intelligence' | 'customer-intelligence-database'>('bar')
   const [showInsights, setShowInsights] = useState(false)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [viewMode, setViewMode] = useState<'tabs' | 'vertical'>('tabs')
@@ -55,6 +55,7 @@ export default function DashboardPage() {
     'bubble': 'bubble',
     'competitive-intelligence': 'competitive-intelligence',
     'customer-intelligence': 'customer-intelligence',
+    'distributor-intelligence': 'distributor-intelligence',
     'customer-intelligence-database': 'customer-intelligence-database'
   }
 
@@ -395,6 +396,18 @@ export default function DashboardPage() {
                             👥 Customer Intelligence
                           </button>
                         )}
+                        {isChartVisible('distributor-intelligence') && (
+                          <button
+                            onClick={() => setActiveTab('distributor-intelligence')}
+                            className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+                              activeTab === 'distributor-intelligence'
+                                ? 'border-blue-500 text-blue-600'
+                                : 'border-transparent text-black hover:text-black hover:border-gray-300'
+                            }`}
+                          >
+                            🏢 Distributor Intelligence
+                          </button>
+                        )}
                         {isChartVisible('customer-intelligence-database') && (
                           <button
                             onClick={() => setActiveTab('customer-intelligence-database')}
@@ -404,7 +417,7 @@ export default function DashboardPage() {
                                 : 'border-transparent text-black hover:text-black hover:border-gray-300'
                             }`}
                           >
-                            👤 Customer Intelligence
+                            👤 Proposition Tables
                           </button>
                         )}
                       </>
@@ -498,19 +511,20 @@ export default function DashboardPage() {
                     )}
                     
                     {activeTab === 'customer-intelligence' && (
-                      <div id="customer-intelligence-chart" className="space-y-8">
-                        <div>
-                          <CustomerIntelligenceHeatmap
-                            title="Customer Intelligence - Industry Category × Region"
-                            height={500}
-                          />
-                        </div>
-                        <div className="mt-8 pt-8 border-t border-gray-200">
-                          <DistributorsIntelligence
-                            title="Distributors Intelligence Database"
-                            height={500}
-                          />
-                        </div>
+                      <div id="customer-intelligence-chart">
+                        <CustomerIntelligenceHeatmap
+                          title="Customer Intelligence - Industry Category × Region"
+                          height={500}
+                        />
+                      </div>
+                    )}
+
+                    {activeTab === 'distributor-intelligence' && (
+                      <div id="distributor-intelligence-chart">
+                        <DistributorIntelligenceTable
+                          title="Distributor Intelligence Database"
+                          height={600}
+                        />
                       </div>
                     )}
 
@@ -593,27 +607,28 @@ export default function DashboardPage() {
                     )}
                     
                     {isChartVisible('customer-intelligence') && (
-                      <div className="space-y-8">
-                        <div className="border-b pb-8">
-                          <h3 className="text-lg font-semibold text-black mb-4">👥 Customer Intelligence</h3>
-                          <CustomerIntelligenceHeatmap
-                            title="Customer Intelligence - Industry Category × Region"
-                            height={450}
-                          />
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-semibold text-black mb-4">📦 Distributors Intelligence Database</h3>
-                          <DistributorsIntelligence
-                            title="Distributors Intelligence Database"
-                            height={500}
-                          />
-                        </div>
+                      <div className="border-b pb-8">
+                        <h3 className="text-lg font-semibold text-black mb-4">👥 Customer Intelligence</h3>
+                        <CustomerIntelligenceHeatmap
+                          title="Customer Intelligence - Industry Category × Region"
+                          height={450}
+                        />
+                      </div>
+                    )}
+
+                    {isChartVisible('distributor-intelligence') && (
+                      <div className="border-b pb-8">
+                        <h3 className="text-lg font-semibold text-black mb-4">🏢 Distributor Intelligence Database</h3>
+                        <DistributorIntelligenceTable
+                          title="Distributor Intelligence Database"
+                          height={500}
+                        />
                       </div>
                     )}
 
                     {isChartVisible('customer-intelligence-database') && (
                       <div className="border-b pb-8">
-                        <h3 className="text-lg font-semibold text-black mb-4">👤 Customer Intelligence Database</h3>
+                        <h3 className="text-lg font-semibold text-black mb-4">👤 Proposition Tables</h3>
                         <CustomerIntelligenceDatabaseWithTabs
                           height={600}
                         />
